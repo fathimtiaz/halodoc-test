@@ -1,0 +1,27 @@
+{
+    "log_types": [{
+            "name": "info",
+            "file": "info.log",
+            "frequency": 1000,
+            "duration": 1,
+            "wait_time": 5
+        },
+        {
+            "name": "error",
+            "file": "error.log",
+            "frequency": 1000,
+            "duration": 1,
+            "wait_time": 5
+        }
+    ],
+
+    "users": [{
+            "name": "Fath",
+            "logs": "ERROR"
+        },
+        {
+            "name": "Kumar",
+            "logs": "INFO"
+        }
+    ]
+}
