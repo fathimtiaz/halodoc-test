@@ -1,27 +1,27 @@
 {
     "log_types": [{
-            "name": "info",
-            "file": "info.log",
-            "frequency": 1000,
+            "name": "[INFO]",
+            "file": "stdout.log",
+            "frequency": 5,
             "duration": 10,
-            "wait_time": 10
+            "wait_time": 3
         },
         {
-            "name": "error",
-            "file": "error.log",
-            "frequency": 1000,
-            "duration": 7,
-            "wait_time": 5
+            "name": "[ERROR]",
+            "file": "stdout.log",
+            "frequency": 5,
+            "duration": 10,
+            "wait_time": 3
         }
     ],
 
     "users": [{
             "name": "Fath",
-            "logs": "ERROR"
+            "logs": "[ERROR]"
         },
         {
             "name": "Kumar",
-            "logs": "INFO"
+            "logs": "[INFO]"
         }
     ]
 }

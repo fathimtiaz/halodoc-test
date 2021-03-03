@@ -21,38 +21,43 @@ type Type struct {
 
 func (t *Type) Read() error {
 
-	file, err := os.Open(t.File)
-	if err != nil {
-		return err
-	}
-	defer file.Close()
+	now := time.Now()
+	intervalTime := time.Date(now.Year(), now.Month(), now.Day(), 0, 0, 0, 0, time.Now().Location())
 
-	startTime := time.Now()
-	count := 0
+	for intervalTime.Before(time.Now()) {
 
-	scanner := bufio.NewScanner(file)
-	for scanner.Scan() {
-		logTimeStr := strings.Split(scanner.Text(), " ")[0]
-		logTime, err := time.Parse(time.RFC3339, logTimeStr)
-
+		file, err := os.Open(t.File)
 		if err != nil {
-			log.Println("cannot read time")
+			return err
 		}
+		defer file.Close()
 
-		if startTime.Sub(logTime) < time.Second*time.Duration(t.Duration) {
-			count++
+		count := 0
+
+		scanner := bufio.NewScanner(file)
+		for scanner.Scan() {
+			logTimeStr := strings.Split(scanner.Text(), " ")[0]
+			logTime, err := time.Parse(time.RFC3339, logTimeStr)
+			if err != nil {
+				log.Println("cannot read time")
+			}
+
+			logTypeStr := strings.Split(scanner.Text(), " ")[1]
+			sub := intervalTime.Sub(logTime)
+
+			if logTypeStr == t.Name && sub > 0 && sub < time.Second*time.Duration(t.Duration) {
+				count++
+			}
 		}
 
 		if count >= t.Frequency {
-			fmt.Println("notify")
+			fmt.Println("notify", t.Users)
 		}
-	}
 
-	if err := scanner.Err(); err != nil {
-		return err
-	}
+		time.Sleep(time.Second * time.Duration(t.Duration))
 
-	t.LastLine++
+		intervalTime = intervalTime.Add(time.Second * time.Duration(t.Duration))
+	}
 
 	return nil
 }
