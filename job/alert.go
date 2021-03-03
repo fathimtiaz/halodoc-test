@@ -16,7 +16,7 @@ func InitAlert(cfg config.Config) {
 		logType.Users = getUsers(cfg.Users, logType.Name)
 
 		fmt.Println("adding cron job for log type ", logType.Name)
-		c.AddFunc(fmt.Sprintf("@every %ds", logType.Duration), func() {
+		c.AddFunc(fmt.Sprintf("@every %ds", logType.Duration+logType.WaitTime), func() {
 			checkForAlert(&logType)
 		})
 	}
